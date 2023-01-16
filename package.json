@@ -1,0 +1,28 @@
+{
+  "name": "idsv",
+  "version": "1.0.0",
+  "description": "Validate common identity numbers in El Salvador",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha --require ts-node/register tests/*.ts"
+  },
+  "keywords": [
+    "validation",
+    "sv",
+    "el",
+    "salvador",
+    "dui",
+    "nit"
+  ],
+  "author": "Rodrigo Arévalo",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1"
+  }
+}
