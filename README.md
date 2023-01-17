@@ -23,27 +23,27 @@ npm install @avalontechsv/idsv
 
 ### Validation
 ```javascript
-import { validateDUI, validateNIT } from '@avalontechsv/idsv';
+import { isValidDUI, isValidNIT } from '@avalontechsv/idsv';
 
 // Validate a DUI
 // Properly formatted DUIs, with or without dashes or spaces at the beginning or end, are valid.
-validateDUI('00000000-0'); // true
-validateDUI('000000000'); // true
-validateDUI(' 00000000-0 '); // true
+isValidDUI('00000000-0'); // true
+isValidDUI('000000000'); // true
+isValidDUI(' 00000000-0 '); // true
 
 // Also, the library pads the DUI with zeros to the left if it's shorter than 9 digits. This is useful for validating DUIs that are stored in a database as integers.
-validateDUI('00'); // true
+isValidDUI('00'); // true
 
 // Validate a NIT
 // Properly formatted DUIs and NITs, with or without dashes or spaces at the beginning or end, are valid.
-validateNIT('00000000-0'); // true
-validateNIT('0000-000000-000-0'); // true
+isValidNIT('00000000-0'); // true
+isValidNIT('0000-000000-000-0'); // true
 
 // DUIs are valid NITs by default, but you can override this behavior passing false as the second parameter.
-validateNIT('00000000-0', false); // false
+isValidNIT('00000000-0', false); // false
 
 // Also, the library pads the NIT with zeros to the left if it's shorter than 14 digits. This is useful for validating NITs that are stored in a database as integers.
-validateNIT('00'); // true
+isValidNIT('00'); // true
 ```
 
 ### Formatting

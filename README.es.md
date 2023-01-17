@@ -23,27 +23,27 @@ npm install @avalontechsv/idsv
 
 ### Validación
 ```javascript
-import { validateDUI, validateNIT } from '@avalontechsv/idsv';
+import { isValidDUI, isValidNIT } from '@avalontechsv/idsv';
 
 // Validar un DUI
 // Los DUIs formateados correctamente, con o sin guiones o espacios al principio o al final, son válidos.
-validateDUI('00000000-0'); // true
-validateDUI('000000000'); // true
-validateDUI(' 00000000-0 '); // true
+isValidDUI('00000000-0'); // true
+isValidDUI('000000000'); // true
+isValidDUI(' 00000000-0 '); // true
 
 // También, la biblioteca completa con ceros a la izquierda si es más corto que 9 dígitos. Esto es útil para validar DUIs que se almacenan en una base de datos como enteros.
-validateDUI('00'); // true
+isValidDUI('00'); // true
 
 // Validar un NIT
 // Los DUIs y NITs formateados correctamente, con o sin guiones o espacios al principio o al final, son válidos.
-validateNIT('00000000-0'); // true
-validateNIT('0000-000000-000-0'); // true
+isValidNIT('00000000-0'); // true
+isValidNIT('0000-000000-000-0'); // true
 
 // Los DUIs son NITs válidos por defecto, pero puedes anular este comportamiento pasando false como segundo parámetro.
-validateNIT('00000000-0', false); // false
+isValidNIT('00000000-0', false); // false
 
 // También, la biblioteca completa con ceros a la izquierda si es más corto que 14 dígitos. Esto es útil para validar NITs que se almacenan en una base de datos como enteros.
-validateNIT('00'); // true
+isValidNIT('00'); // true
 ```
 
 ### Formateo
