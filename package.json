@@ -1,5 +1,5 @@
 {
-  "name": "idsv",
+  "name": "@avalontechsv/idsv",
   "version": "1.0.0",
   "description": "Validate common identity numbers in El Salvador",
   "main": "dist/index.js",
@@ -43,5 +43,8 @@
   },
   "bugs": {
     "url": "https://github.com/avalon-tech/idsv-js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
