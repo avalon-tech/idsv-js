@@ -1,5 +1,5 @@
 import { cleanDocument } from './utils';
-import { isValidDUI } from './dui'
+import { validator as isValidDUI, formatter as formatDUI } from './dui'
 
 /**
  * Validates a NIT (Número de Identificación Tributaria) in El Salvador.
@@ -11,7 +11,7 @@ import { isValidDUI } from './dui'
  * @returns True if the NIT is valid, false otherwise.
  * @see isValidDUI
  **/
-export const isValidNIT = (nit: string, allowDUI: boolean = true): boolean => {
+export const validator = (nit: string, allowDUI: boolean = true): boolean => {
     if(allowDUI && isValidDUI(nit)) {
         return true;
     }
@@ -72,6 +72,29 @@ export const isValidNIT = (nit: string, allowDUI: boolean = true): boolean => {
     return Number(nit[13]) === calculatedCheckDigit;
 }
 
+export const formatter = (unformatted: string, allowDUI: boolean = true): string => {
+    if(allowDUI && isValidDUI(unformatted)) {
+        return formatDUI(unformatted);
+    }
+
+    unformatted = cleanDocument(unformatted);
+
+    if (unformatted.length < 14) {
+        unformatted = unformatted.padStart(14, '0');
+    }
+
+    const validated = validator(unformatted, false);
+
+    if (!validated) {
+        throw new Error('Invalid NIT');
+    }
+
+    const formatted: string = unformatted.slice(0, 4) + '-' + unformatted.slice(4, 10) + '-' + unformatted.slice(10, 13) + '-' + unformatted.slice(13, 14);
+
+    return formatted;
+}
+
 export default {
-    isValidNIT,
+    validator,
+    formatter
 }

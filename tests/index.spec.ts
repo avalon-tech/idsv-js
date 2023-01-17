@@ -1,7 +1,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import { isValidDUI, isValidNIT } from '../src';
+import { isValidDUI, formatDUI, isValidNIT, formatNIT } from '../src';
 
 describe('isValidDUI', () => {
     it('should be a function with a single parameter', () => {
@@ -19,7 +19,18 @@ describe('isValidDUI', () => {
         assert.isFalse(isValidDUI('00000000-1'));
         assert.isFalse(isValidDUI('01'));
     });
+
+    it('should return true for valid DUI with spaces at the start or the end', () => {
+        assert.isTrue(isValidDUI(' 000000000'));
+        assert.isTrue(isValidDUI('000000000 '));
+        assert.isTrue(isValidDUI(' 000000000 '));
+    });
+
+    it('should return false for empty string', () => {
+        assert.isFalse(isValidDUI(''));
+    });
 });
+
 
 describe('isValidNIT', () => {
     it('should be a function with a single parameter', () => {
@@ -45,4 +56,90 @@ describe('isValidNIT', () => {
         assert.isFalse(isValidNIT('18', false));
     });
 
+    it('should return true for valid NITs when allowDUI is false', () => {
+        assert.isTrue(isValidNIT('00000000000000', false));
+        assert.isTrue(isValidNIT('0000-000000-000-0', false));
+        assert.isTrue(isValidNIT('00', false));
+    });
+
+    it('should return false for invalid NITs when allowDUI is false', () => {
+        assert.isFalse(isValidNIT('00000000000001', false));
+        assert.isFalse(isValidNIT('0000-000000-000-1', false));
+        assert.isFalse(isValidNIT('01', false));
+    });
+
+    it('should return true for valid NITs with spaces at the start or the end', () => {
+        assert.isTrue(isValidNIT(' 00000000000000'));
+        assert.isTrue(isValidNIT('00000000000000 '));
+        assert.isTrue(isValidNIT(' 00000000000000 '));
+    });
+
+    it('should return false for empty string', () => {
+        assert.isFalse(isValidNIT(''));
+    });
+});
+
+describe('formatDUI', () => {
+    it('should be a function with a single parameter', () => {
+        assert.strictEqual(formatDUI.length, 1);
+    });
+
+    it('should return a formatted DUI', () => {
+        assert.strictEqual(formatDUI('000000000'), '00000000-0');
+        assert.strictEqual(formatDUI('00000000-0'), '00000000-0');
+        assert.strictEqual(formatDUI('00'), '00000000-0');
+        assert.strictEqual(formatDUI(' 000000000'), '00000000-0');
+        assert.strictEqual(formatDUI('000000000 '), '00000000-0');
+        assert.strictEqual(formatDUI(' 000000000 '), '00000000-0');
+    });
+
+    it('should throw an error for invalid DUIs', () => {
+        assert.throws(() => formatDUI('000000001'));
+        assert.throws(() => formatDUI('00000000-1'));
+        assert.throws(() => formatDUI('01'));
+        assert.throws(() => formatDUI(' 000000001'));
+        assert.throws(() => formatDUI('000000001 '));
+        assert.throws(() => formatDUI(' 000000001 '));
+    });
+});
+
+describe('formatNIT', () => {
+    it('should be a function with a single parameter', () => {
+        assert.strictEqual(formatNIT.length, 1);
+    });
+
+    it('should return a formatted NIT', () => {
+        assert.strictEqual(formatNIT('06140703201049'), '0614-070320-104-9');
+        assert.strictEqual(formatNIT('0614-070320-104-9'), '0614-070320-104-9');
+    });
+
+    it('should return a formatted DUI by default if a valid DUI is input', () => {
+        assert.strictEqual(formatNIT('000000018'), '00000001-8');
+        assert.strictEqual(formatNIT('00000001-8'), '00000001-8');
+        assert.strictEqual(formatNIT('18'), '00000001-8');
+    });
+
+    it('should throw an error if DUI is formatted when allowDUI is false', () => {
+        assert.throws(() => formatNIT('000000018', false));
+        assert.throws(() => formatNIT('00000001-8', false));
+        assert.throws(() => formatNIT('18', false));
+    });
+
+    it ('should return a formatted NIT when allowDUI is false', () => {
+        assert.strictEqual(formatNIT('00000000000000', false), '0000-000000-000-0');
+        assert.strictEqual(formatNIT('0000-000000-000-0', false), '0000-000000-000-0');
+        assert.strictEqual(formatNIT('00', false), '0000-000000-000-0');
+    });
+
+    it('should throw an error for invalid DUIs', () => {
+        assert.throws(() => formatNIT('000000001'));
+        assert.throws(() => formatNIT('00000000-1'));
+        assert.throws(() => formatNIT('01'));
+    });
+
+    it('should throw an error for invalid NITs', () => {
+        assert.throws(() => formatNIT('00000000000001', false));
+        assert.throws(() => formatNIT('0000-000000-000-1', false));
+        assert.throws(() => formatNIT('01', false));
+    });
 });

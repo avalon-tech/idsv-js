@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "mocha --require ts-node/register tests/*.ts"
+    "test": "mocha --require ts-node/register tests/*.ts",
+    "index": "ts-node --esm index.js"
   },
   "keywords": [
     "validation",

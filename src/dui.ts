@@ -6,7 +6,7 @@ import { cleanDocument } from './utils';
  * @param dui The DUI to validate.
  * @returns True if the DUI is valid, false otherwise.
  */
-export const isValidDUI = (dui: string): boolean => {
+export const validator = (dui: string): boolean => {
     // DUI cannot be null
     if (dui === null) {
         return false;
@@ -54,6 +54,36 @@ export const isValidDUI = (dui: string): boolean => {
     return checkDigit === expectedCheckDigit;
 }
 
+/**
+ * Formats a DUI (Documento Único de Identidad) in El Salvador.
+ * 
+ * @param unformatted The unformatted DUI to format.
+ * @returns The formatted DUI.
+ * @throws Error if the DUI is not valid.
+ * @see validator
+ * @see cleanDocument
+ */
+export const formatter = (unformatted: string): string => {
+    unformatted = cleanDocument(unformatted);
+
+    // Pad DUI with zeros if it's less than 9 digits
+    if (unformatted.length < 9) {
+        unformatted = unformatted.padStart(9, '0');
+    }
+
+    const validated: boolean = validator(unformatted);
+
+    // Throw an exception if the DUI is not valid
+    if (!validated) {
+        throw new Error('Invalid DUI');
+    }
+
+    const formatted: string = `${unformatted.slice(0, 8)}-${unformatted[8]}`;
+
+    return formatted;
+}
+
 export default {
-    isValidDUI,
+    validator,
+    formatter,
 }
