@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Run tests and generate coverage reports
-        run: npm test-coverage
+        run: npm run test-coverage
 
       - name: Build
         run: npm run build
