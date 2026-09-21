@@ -38,6 +38,10 @@ jobs:
   publish:
     needs: build
 
+    # Never from a pull request: this job has the npm token, and without this
+    # a PR that bumps the version would publish it before anyone reviewed it.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     runs-on: ubuntu-latest
 
     steps:
