@@ -67,11 +67,14 @@ export const formatter = (
   unformatted: string | number,
   allowDUI: boolean = true
 ): string => {
-  if (typeof unformatted === "number") {
-    unformatted = unformatted.toString();
-  }
-
+  // Clean the NIT, which also turns numbers into strings
   unformatted = cleanDocument(unformatted);
+
+  // Throw an exception if the NIT has no digits at all, as an empty string
+  // would otherwise be padded into a document
+  if (!unformatted) {
+    throw new Error("Invalid NIT");
+  }
 
   if (allowDUI && isValidDUI(unformatted)) {
     return formatDUI(unformatted);

@@ -153,6 +153,19 @@ describe("formatDUI", () => {
     assert.throws(() => formatDUI(" 000000001 "));
     assert.throws(() => formatDUI(1));
   });
+
+  it("should throw an error for input that is not a document", () => {
+    assert.throws(() => formatDUI(""), "Invalid DUI");
+    assert.throws(() => formatDUI("abc"), "Invalid DUI");
+    assert.throws(() => formatDUI("12 34"), "Invalid DUI");
+    assert.throws(() => formatDUI(NaN), "Invalid DUI");
+    assert.throws(() => formatDUI(-18), "Invalid DUI");
+    assert.throws(
+      () => formatDUI(undefined as unknown as string),
+      "Invalid DUI"
+    );
+    assert.throws(() => formatDUI(null as unknown as string), "Invalid DUI");
+  });
 });
 
 describe("formatNIT", () => {
@@ -202,5 +215,20 @@ describe("formatNIT", () => {
     assert.throws(() => formatNIT("0000-000000-000-1", false));
     assert.throws(() => formatNIT("01", false));
     assert.throws(() => formatNIT(1, false));
+  });
+
+  it("should throw an error for input that is not a document", () => {
+    assert.throws(() => formatNIT(""), "Invalid NIT");
+    assert.throws(() => formatNIT("abc"), "Invalid NIT");
+    assert.throws(() => formatNIT("12 34"), "Invalid NIT");
+    assert.throws(() => formatNIT(NaN), "Invalid NIT");
+    assert.throws(() => formatNIT(-18), "Invalid NIT");
+    assert.throws(
+      () => formatNIT(undefined as unknown as string),
+      "Invalid NIT"
+    );
+    assert.throws(() => formatNIT(null as unknown as string), "Invalid NIT");
+    assert.throws(() => formatNIT("", false), "Invalid NIT");
+    assert.throws(() => formatNIT("abc", false), "Invalid NIT");
   });
 });

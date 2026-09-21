@@ -54,11 +54,13 @@ export const validator = (dui: string | number): boolean => {
  * @see cleanDocument
  */
 export const formatter = (unformatted: string | number): string => {
-  // If DUI is a string, clean it
-  if (typeof unformatted === "string") {
-    unformatted = cleanDocument(unformatted);
-  } else {
-    unformatted = unformatted.toString();
+  // Clean the DUI, which also turns numbers into strings
+  unformatted = cleanDocument(unformatted);
+
+  // Throw an exception if the DUI has no digits at all, as an empty string
+  // would otherwise be padded into a document
+  if (!unformatted) {
+    throw new Error("Invalid DUI");
   }
 
   // From this point on, unformatted is a string, so we can safely use string methods.
