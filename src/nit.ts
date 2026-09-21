@@ -31,6 +31,11 @@ export const validator = (
     nit = nit.padStart(14, "0");
   }
 
+  // NIT must be 14 digits long
+  if (nit.length !== 14) {
+    return false;
+  }
+
   // A NIT made only of zeros does not exist
   if (!/[1-9]/.test(nit)) {
     return false;

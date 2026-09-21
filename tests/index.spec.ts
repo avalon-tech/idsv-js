@@ -105,6 +105,15 @@ describe("isValidNIT", () => {
     assert.isFalse(isValidNIT(18, false));
   });
 
+  it("should return false for NITs longer than 14 digits", () => {
+    // Only the first 14 digits were read, so a longer number passed on the
+    // strength of a valid prefix
+    assert.isFalse(isValidNIT("123456789012300", false));
+    assert.isFalse(isValidNIT("1234567890123000", false));
+    assert.isFalse(isValidNIT("1234-567890-123-00"));
+    assert.isFalse(isValidNIT(123456789012300));
+  });
+
   it("should return true for valid NITs when allowDUI is false", () => {
     assert.isTrue(isValidNIT("12345678901230", false));
     assert.isTrue(isValidNIT("1234-567890-123-0", false));
