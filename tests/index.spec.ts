@@ -206,9 +206,9 @@ describe("formatNIT", () => {
   });
 
   it("should return a formatted NIT", () => {
-    assert.strictEqual(formatNIT("06140703201049"), "0614-070320-104-9");
-    assert.strictEqual(formatNIT("0614-070320-104-9"), "0614-070320-104-9");
-    assert.strictEqual(formatNIT(6140703201049), "0614-070320-104-9");
+    assert.strictEqual(formatNIT("09999999991017"), "0999-999999-101-7");
+    assert.strictEqual(formatNIT("0999-999999-101-7"), "0999-999999-101-7");
+    assert.strictEqual(formatNIT(9999999991017), "0999-999999-101-7");
   });
 
   it("should return a formatted DUI by default if a valid DUI is input", () => {
