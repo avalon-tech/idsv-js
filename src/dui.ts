@@ -7,16 +7,9 @@ import { cleanDocument } from "./utils";
  * @returns True if the DUI is valid, false otherwise.
  */
 export const validator = (dui: string | number): boolean => {
-  if (typeof dui === "number") {
-    dui = dui.toString();
-  }
-
-  if (dui.length === 0) {
-    return false;
-  }
-
   dui = cleanDocument(dui);
 
+  // DUI must be made of digits only
   if (!dui) {
     return false;
   }
@@ -28,6 +21,11 @@ export const validator = (dui: string | number): boolean => {
 
   // DUI must be 9 digits
   if (dui.length !== 9) {
+    return false;
+  }
+
+  // A DUI made only of zeros does not exist
+  if (!/[1-9]/.test(dui)) {
     return false;
   }
 
@@ -61,11 +59,13 @@ export const validator = (dui: string | number): boolean => {
  * @see cleanDocument
  */
 export const formatter = (unformatted: string | number): string => {
-  // If DUI is a string, clean it
-  if (typeof unformatted === "string") {
-    unformatted = cleanDocument(unformatted);
-  } else {
-    unformatted = unformatted.toString();
+  // Clean the DUI, which also turns numbers into strings
+  unformatted = cleanDocument(unformatted);
+
+  // Throw an exception if the DUI has no digits at all, as an empty string
+  // would otherwise be padded into a document
+  if (!unformatted) {
+    throw new Error("Invalid DUI");
   }
 
   // From this point on, unformatted is a string, so we can safely use string methods.

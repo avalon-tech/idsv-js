@@ -15,22 +15,13 @@ export const validator = (
   nit: string | number,
   allowDUI: boolean = true
 ): boolean => {
-  if (typeof nit === "number") {
-    nit = nit.toString();
-  }
-
   if (allowDUI && isValidDUI(nit)) {
     return true;
   }
 
-  // NIT cannot be empty
-  if (nit === "") {
-    return false;
-  }
-
   nit = cleanDocument(nit);
 
-  // NIT must be numeric
+  // NIT must be made of digits only
   if (!nit) {
     return false;
   }
@@ -38,6 +29,16 @@ export const validator = (
   // Pad NIT with zeros if it's less than 14 digits
   if (nit.length < 14) {
     nit = nit.padStart(14, "0");
+  }
+
+  // NIT must be 14 digits long
+  if (nit.length !== 14) {
+    return false;
+  }
+
+  // A NIT made only of zeros does not exist
+  if (!/[1-9]/.test(nit)) {
+    return false;
   }
 
   let sum: number = 0;
@@ -76,11 +77,14 @@ export const formatter = (
   unformatted: string | number,
   allowDUI: boolean = true
 ): string => {
-  if (typeof unformatted === "number") {
-    unformatted = unformatted.toString();
-  }
-
+  // Clean the NIT, which also turns numbers into strings
   unformatted = cleanDocument(unformatted);
+
+  // Throw an exception if the NIT has no digits at all, as an empty string
+  // would otherwise be padded into a document
+  if (!unformatted) {
+    throw new Error("Invalid NIT");
+  }
 
   if (allowDUI && isValidDUI(unformatted)) {
     return formatDUI(unformatted);
