@@ -26,6 +26,20 @@ describe("isValidDUI", () => {
     assert.isFalse(isValidDUI("abcdefghi"));
   });
 
+  it("should return false for input that only looks like a number", () => {
+    assert.isFalse(isValidDUI("1e5"));
+    assert.isFalse(isValidDUI("1.5"));
+    assert.isFalse(isValidDUI("12 34"));
+    assert.isFalse(isValidDUI(1.5));
+    assert.isFalse(isValidDUI(-18));
+    assert.isFalse(isValidDUI(NaN));
+  });
+
+  it("should return false for values that are neither a string nor a number", () => {
+    assert.isFalse(isValidDUI(undefined as unknown as string));
+    assert.isFalse(isValidDUI(null as unknown as string));
+  });
+
   it("should return true for valid DUI with spaces at the start or the end", () => {
     assert.isTrue(isValidDUI(" 000000000"));
     assert.isTrue(isValidDUI("000000000 "));
@@ -58,6 +72,22 @@ describe("isValidNIT", () => {
 
   it("should return false for non-numeric DUIs by default", () => {
     assert.isFalse(isValidNIT("abcdefghi"));
+  });
+
+  it("should return false for input that only looks like a number", () => {
+    assert.isFalse(isValidNIT("1e5"));
+    assert.isFalse(isValidNIT("1.5"));
+    assert.isFalse(isValidNIT("12 34"));
+    assert.isFalse(isValidNIT(1.5));
+    assert.isFalse(isValidNIT(-18));
+    assert.isFalse(isValidNIT(NaN));
+    assert.isFalse(isValidNIT("1e5", false));
+    assert.isFalse(isValidNIT("12 34", false));
+  });
+
+  it("should return false for values that are neither a string nor a number", () => {
+    assert.isFalse(isValidNIT(undefined as unknown as string));
+    assert.isFalse(isValidNIT(null as unknown as string));
   });
 
   it("should return false for valid DUIs when allowDUI is false", () => {

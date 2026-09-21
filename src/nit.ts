@@ -15,22 +15,13 @@ export const validator = (
   nit: string | number,
   allowDUI: boolean = true
 ): boolean => {
-  if (typeof nit === "number") {
-    nit = nit.toString();
-  }
-
   if (allowDUI && isValidDUI(nit)) {
     return true;
   }
 
-  // NIT cannot be empty
-  if (nit === "") {
-    return false;
-  }
-
   nit = cleanDocument(nit);
 
-  // NIT must be numeric
+  // NIT must be made of digits only
   if (!nit) {
     return false;
   }

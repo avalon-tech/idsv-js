@@ -7,16 +7,9 @@ import { cleanDocument } from "./utils";
  * @returns True if the DUI is valid, false otherwise.
  */
 export const validator = (dui: string | number): boolean => {
-  if (typeof dui === "number") {
-    dui = dui.toString();
-  }
-
-  if (dui.length === 0) {
-    return false;
-  }
-
   dui = cleanDocument(dui);
 
+  // DUI must be made of digits only
   if (!dui) {
     return false;
   }
