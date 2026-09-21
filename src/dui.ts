@@ -24,6 +24,11 @@ export const validator = (dui: string | number): boolean => {
     return false;
   }
 
+  // A DUI made only of zeros does not exist
+  if (!/[1-9]/.test(dui)) {
+    return false;
+  }
+
   // DUI must have a valid check digit
   const checkDigit: number = Number(dui[8]);
 

@@ -33,23 +33,26 @@ import { isValidDUI, isValidNIT } from "@avalontechsv/idsv";
 
 // Validate a DUI
 // Properly formatted DUIs, with or without dashes or spaces at the beginning or end, are valid.
-isValidDUI("00000000-0"); // true
-isValidDUI("000000000"); // true
-isValidDUI(" 00000000-0 "); // true
+isValidDUI("12345678-4"); // true
+isValidDUI("123456784"); // true
+isValidDUI(" 12345678-4 "); // true
 
 // Also, the library pads the DUI with zeros to the left if it's shorter than 9 digits. This is useful for validating DUIs that are stored in a database as integers.
-isValidDUI("00"); // true
+isValidDUI("18"); // true
+
+// Documents made only of zeros do not exist, so they are never valid.
+isValidDUI("00000000-0"); // false
 
 // Validate a NIT
 // Properly formatted DUIs and NITs, with or without dashes or spaces at the beginning or end, are valid.
-isValidNIT("00000000-0"); // true
-isValidNIT("0000-000000-000-0"); // true
+isValidNIT("12345678-4"); // true
+isValidNIT("1234-567890-123-0"); // true
 
 // DUIs are valid NITs by default, but you can override this behavior passing false as the second parameter.
-isValidNIT("00000000-0", false); // false
+isValidNIT("12345678-4", false); // false
 
 // Also, the library pads the NIT with zeros to the left if it's shorter than 14 digits. This is useful for validating NITs that are stored in a database as integers.
-isValidNIT("00"); // true
+isValidNIT("115", false); // true
 ```
 
 ### Formatting
@@ -59,25 +62,28 @@ import { formatDUI, formatNIT } from "@avalontechsv/idsv";
 
 // Format a DUI
 // Same as validation, but it returns the formatted DUI instead of a boolean.
-formatDUI("00000000-0"); // '00000000-0'
-formatDUI("000000000"); // '00000000-0'
-formatDUI(" 00000000-0 "); // '00000000-0'
-formatDUI("00"); // '00000000-0'
+formatDUI("12345678-4"); // '12345678-4'
+formatDUI("123456784"); // '12345678-4'
+formatDUI(" 12345678-4 "); // '12345678-4'
+formatDUI("18"); // '00000001-8'
 
 // Invalid DUIs throw an error.
-formatDUI("00000000-1"); // Error: Invalid DUI
+formatDUI("12345678-9"); // Error: Invalid DUI
+
+// Input without digits, such as an empty string, also throws an error.
+formatDUI(""); // Error: Invalid DUI
 
 // Format a NIT
 // Same as validation, but it returns the formatted NIT instead of a boolean. By default, valid DUIs are also valid NITs, but you can override this behavior passing false as the second parameter.
 
 formatNIT("00000001-8"); // '00000001-8' (DUI)
-formatNIT("0000-000000-000-0"); // '0000-000000-000-0'
-formatNIT(" 0000-000000-000-0 "); // '0000-000000-000-0'
+formatNIT("1234-567890-123-0"); // '1234-567890-123-0'
+formatNIT(" 1234-567890-123-0 "); // '1234-567890-123-0'
 
 formatNIT("00000001-8", false); // Throws an error because '00000001-8' is a valid DUI but not a valid NIT.
 
 // Invalid NITs throw an error.
-formatNIT("0000-000000-000-1"); // Error: Invalid NIT
+formatNIT("1234-567890-123-1"); // Error: Invalid NIT
 ```
 
 ## Testing
